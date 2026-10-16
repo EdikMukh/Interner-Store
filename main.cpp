@@ -1,5 +1,8 @@
  #include <iostream>
 #include <windows.h>
+#include <string>
+#include <fstream>
+#include <vector>
 
  using namespace std;
  void addorder(){cout << "add order;" << "\n";}
@@ -64,9 +67,56 @@ void main_menu(){
         }
 
     }}  
+// ------------file ultilites------------
+vector<string> read_file(string patch){
+    ifstream file(patch);
+    vector<string> lines;
+    if (file.is_open()){
+        string line;
+        while (getline(file, line))
+            lines.push_back(line);
+    };
+    return lines;
+}
+
+
+bool append_to_file(string path, string text) {
+    ofstream file(path, ios::app);
+    if (file.is_open()) {
+        file << text << endl; 
+        file.close();
+        return true; 
+    }
+    return false;
+}
+
+
+
+bool overwrite_file(string path, string text) {
+    ofstream file(path); 
+    if (file.is_open()) {
+        file << text; 
+        file.close();
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
 
   int main(){
         SetConsoleOutputCP(CP_UTF8);
         SetConsoleCP(CP_UTF8);
     main_menu();
+    vector<string> lines = read_file("data/orders.txt");
+    for (const string &item : lines)
+            cout << item << endl;
+    
+
+    return 0;
   }
